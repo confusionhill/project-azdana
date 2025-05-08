@@ -236,7 +236,7 @@ CREATE TABLE `users` (
   `gender` varchar(1) NOT NULL DEFAULT 'M',
   `hairName` varchar(16) NOT NULL DEFAULT 'Default',
   `hairFile` varchar(128) NOT NULL DEFAULT 'hair/M/Default.swf',
-  `curServer` varchar(16) NOT NULL,
+  `curServer` varchar(16) NOT NULL DEFAULT 'WQW',
   `banned` tinyint(1) NOT NULL DEFAULT '0',
   `vip` tinyint(1) NOT NULL DEFAULT '0',
   `ug` tinyint(1) NOT NULL DEFAULT '0',

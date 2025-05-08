@@ -3,12 +3,27 @@ package webbackend
 import (
 	"net/http"
 
+	"com.github/confusionhill-aqw-ps/application/consumer"
 	"com.github/confusionhill-aqw-ps/internal/config"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func RunWebBackendApp(cfg *config.Config) {
+type UserForm struct {
+	Email     string `form:"strEmail"`
+	Age       int    `form:"intAge"`
+	Gender    string `form:"strGender"`
+	HairColor int    `form:"intColorHair"`
+	SkinColor int    `form:"intColorSkin"`
+	HairID    int    `form:"HairID"`
+	EyeColor  int    `form:"intColorEye"`
+	DOB       string `form:"strDOB"`
+	Password  string `form:"strPassword"`
+	Username  string `form:"strUsername"`
+	ClassID   int    `form:"ClassID"`
+}
+
+func RunWebBackendApp(cfg *config.Config, handlers *consumer.Handlers) error {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -30,9 +45,8 @@ func RunWebBackendApp(cfg *config.Config) {
 		return c.String(http.StatusOK, "status=success&sFile=client/game_ori_rev.swf&sTitle=Alpha Test&sBG=bg.swf")
 	})
 
-	e.POST("/game/cf-userlogin.asp", func(c echo.Context) error {
-		return c.String(http.StatusOK, "<login bSuccess='0' sMsg='The username and password you entered did not match. Please check the spelling and try again.'/>")
-	})
+	e.POST("/game/cf-userlogin.asp", handlers.Auth.LoginUserHandler)
+	e.POST("/cf-usersignup.php", handlers.Auth.RegisterUserHandler)
 
-	e.Logger.Fatal(e.Start(cfg.Server.WebPort))
+	return e.Start(cfg.Server.WebPort)
 }

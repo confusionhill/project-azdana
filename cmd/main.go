@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	webbackend "com.github/confusionhill-aqw-ps/application/webBackend"
+	"com.github/confusionhill-aqw-ps/application"
 	"com.github/confusionhill-aqw-ps/internal/config"
 )
 
@@ -12,5 +12,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
-	webbackend.RunWebBackendApp(cfg)
+	err = application.RunApplication(cfg)
+	if err != nil {
+		log.Fatalf("Failed to run application: %v", err)
+	}
 }
