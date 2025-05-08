@@ -1,7 +1,16 @@
 package main
 
-import webbackend "com.github/confusionhill-aqw-ps/application/webBackend"
+import (
+	"log"
+
+	webbackend "com.github/confusionhill-aqw-ps/application/webBackend"
+	"com.github/confusionhill-aqw-ps/internal/config"
+)
 
 func main() {
-	webbackend.RunWebBackendApp()
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
+	webbackend.RunWebBackendApp(cfg)
 }

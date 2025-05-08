@@ -26,3 +26,6 @@ go.work.sum
 .env
 /build
 .DS_Store
+
+# game
+*.as
