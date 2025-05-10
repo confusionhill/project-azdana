@@ -10,7 +10,7 @@ type Usecases struct {
 }
 
 func NewUsecases(cfg *config.Config, repo *Repositories) (*Usecases, error) {
-	authUsecase, err := auth.NewUsecase(cfg, repo.auth)
+	authUsecase, err := auth.NewUsecase(cfg, repo.Auth)
 	if err != nil {
 		return nil, err
 	}

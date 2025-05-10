@@ -54,8 +54,8 @@ func (h *Handler) LoginUserHandler(c echo.Context) error {
 				BUpg:    0,
 			},
 			{
-				SName:   "WQW",
-				SIP:     "128.98.123",
+				SName:   "ProxyMan",
+				SIP:     "proxyman.debug",
 				ICount:  1,
 				IMax:    50,
 				BOnline: 1,

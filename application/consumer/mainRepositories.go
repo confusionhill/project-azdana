@@ -6,7 +6,7 @@ import (
 )
 
 type Repositories struct {
-	auth *auth.Repository
+	Auth *auth.Repository
 }
 
 func NewRepositories(cfg *config.Config, rsc *Resources) (*Repositories, error) {
@@ -15,6 +15,6 @@ func NewRepositories(cfg *config.Config, rsc *Resources) (*Repositories, error) 
 		return nil, err
 	}
 	return &Repositories{
-		auth: authRepo,
+		Auth: authRepo,
 	}, nil
 }

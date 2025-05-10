@@ -22,7 +22,7 @@ func (u *Usecase) registerUserUsecase(ctx context.Context, req *auth.RegisterUse
 }
 
 func (u *Usecase) loginUserUsecase(ctx context.Context, req auth.LoginUserRequestDTO) (*game.User, error) {
-	user, err := u.repo.loginUser(ctx, req)
+	user, err := u.repo.LoginUser(ctx, req)
 	if err != nil {
 		return nil, err
 	}

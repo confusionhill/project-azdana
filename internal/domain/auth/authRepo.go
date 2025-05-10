@@ -56,7 +56,7 @@ func (r *Repository) createUser(ctx context.Context, req *auth.RegisterUserReque
 	return newUser.ID, nil
 }
 
-func (r *Repository) loginUser(ctx context.Context, req auth.LoginUserRequestDTO) (*game.User, error) {
+func (r *Repository) LoginUser(ctx context.Context, req auth.LoginUserRequestDTO) (*game.User, error) {
 	var user game.User
 	err := r.db.GetContext(ctx, &user, "SELECT * FROM users WHERE username = ? AND password = ? LIMIT 1", req.Username, req.Password)
 	if err != nil {

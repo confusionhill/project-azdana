@@ -66,3 +66,42 @@ type ServerResponseDTO struct {
 	IChat   int64  `xml:"iChat,attr"`
 	BUpg    int64  `xml:"bUpg,attr"`
 }
+
+type GameLoginRequestDTO struct {
+	XMLName xml.Name         `xml:"msg"`
+	T       string           `xml:"t,attr"`
+	Body    GameLoginBodyDTO `xml:"body"`
+}
+
+type GameLoginBodyDTO struct {
+	Action string           `xml:"action,attr"`
+	R      int              `xml:"r,attr"`
+	Login  GameLoginDataDTO `xml:"login"`
+}
+
+type GameLoginDataDTO struct {
+	Z     string `xml:"z,attr"`
+	Nick  string `xml:"nick"`
+	Pword string `xml:"pword"`
+}
+
+// func main() {
+// 	xmlData := `
+// 	<msg t='sys'>
+// 		<body action='login' r='0'>
+// 			<login z='zone_master'>
+// 				<nick><![CDATA[dukun]]></nick>
+// 				<pword><![CDATA[dukun123]]></pword>
+// 			</login>
+// 		</body>
+// 	</msg>`
+
+// 	var msg Msg
+// 	err := xml.Unmarshal([]byte(xmlData), &msg)
+// 	if err != nil {
+// 		fmt.Println("Error:", err)
+// 		return
+// 	}
+
+// 	fmt.Printf("Parsed struct: %+v\n", msg)
+// }

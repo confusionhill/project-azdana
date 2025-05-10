@@ -5,7 +5,7 @@
             "host": "./aqw_database.db"
         }, 
         "name": "Adventure Quest Worlds Private server",
-        "webPort": ":8081",
+        "webPort": ":8080",
         "gamePort": ":5588"
     },
     "settings": {
