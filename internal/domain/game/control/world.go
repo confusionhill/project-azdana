@@ -52,7 +52,15 @@ func NewWorld(maps []game.Map) World {
 //		return w.getPrivateRoom(name, roomId, player)
 //	}
 func (w *World) GetMap(mutex *sync.Mutex, name string, roomId int64, player game.User) (*game.Room, error) {
-	return w.getPrivateRoom(mutex, name, 1, player)
+	room, err := w.getPrivateRoom(mutex, name, 1, player)
+	if err != nil {
+		return nil, err
+	}
+	return &game.Room{
+		Id:      room.Id,
+		Map:     room.Map,
+		Players: room.Players,
+	}, nil
 }
 
 func (w *World) getPrivateRoom(mutex *sync.Mutex, name string, roomId int64, player game.User) (*game.Room, error) {
@@ -83,6 +91,16 @@ func (w *World) AddConn(mutex *sync.Mutex, conn net.Conn, player game.User) {
 	w.netPool[conn] = player
 	mutex.Unlock()
 	log.Debugf("Added connection: %v", conn)
+}
+
+func (w *World) GetPlayer(mutex *sync.Mutex, conn net.Conn) (game.User, error) {
+	mutex.Lock()
+	defer mutex.Unlock()
+	player, ok := w.netPool[conn]
+	if !ok {
+		return game.User{}, errors.New(errorsEntity.PLAYER_NOT_FOUND)
+	}
+	return player, nil
 }
 
 func (w *World) RemoveConn(mutex *sync.Mutex, conn net.Conn) {

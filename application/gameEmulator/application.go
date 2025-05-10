@@ -15,7 +15,15 @@ import (
 )
 
 func RunGameEmulator(cfg *config.Config, rsc *consumer.Resources, repo *consumer.Repositories) error {
-	world := control.NewWorld(make([]game.Map, 0))
+	gameMap := []game.Map{
+		{
+			Id:        1,
+			Name:      "battleon",
+			MaxPlayer: 5,
+			FileName:  "town-yulgar-darts.swf",
+		},
+	}
+	world := control.NewWorld(gameMap)
 	net, err := net.Listen("tcp", cfg.Server.GamePort)
 	if err != nil {
 		return err

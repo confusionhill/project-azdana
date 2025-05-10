@@ -3,6 +3,7 @@ package requests
 import (
 	"context"
 	"net"
+	"strings"
 	"sync"
 
 	"com.github/confusionhill-aqw-ps/internal/config"
@@ -28,9 +29,26 @@ func NewLogin(cfg *config.Config, mutex *sync.Mutex, world *control.World, repo 
 	}
 }
 
+type loginResponse struct {
+	Username string
+	Message  string
+	Password string
+}
+
+func (lr loginResponse) toMessage() string {
+	template := "%xt%loginResponse%-1%true%1%{username}%{message}%{password}%sNews=news/News-Aug14.swf,sMap=news/Map-Aug14.swf,sBook=news/Book-July16.swf%"
+
+	// Replace placeholders
+	result := strings.ReplaceAll(template, "{username}", lr.Username)
+	result = strings.ReplaceAll(result, "{message}", lr.Message)
+	result = strings.ReplaceAll(result, "{password}", lr.Password)
+
+	return result
+}
+
 func (l *Login) Handle(conn net.Conn, packet dto.GameLoginRequestDTO) utilities.Packet {
 	sendPacket := utilities.NewPacket()
-	sendPacket.AddString("%xt%loginResponse%-1%")
+	// sendPacket.AddString("%xt%loginResponse%-1%")
 	user, err := l.repo.LoginUser(context.Background(), dto.LoginUserRequestDTO{
 		Username: packet.Body.Login.Nick,
 		Password: packet.Body.Login.Pword,
@@ -40,9 +58,12 @@ func (l *Login) Handle(conn net.Conn, packet dto.GameLoginRequestDTO) utilities.
 		return sendPacket
 	}
 	l.world.AddConn(l.mutex, conn, *user)
-	// `%xt%loginResponse%-1%true%1%$dukun%Welcome to AsyncQuest! An educational AQWorlds Private Server made with NodeJS.%2020-08-05T21:42:25%sNews=news.swft,sMap=map.swft,sBook=book.swft,sFBC=dldld,sAssets=asset.swf,sWTSandbox=false,gMenu=menu.swf%\0`
-	serverMsg := "Welcome to Adventure Quest Worlds! An educational AQWorlds Private Server made with Go."
-	msg := "true%-1%" + "%" + user.Username + "%" + serverMsg + "%" + user.Password //+ "%" + ""
+	loginResponse := loginResponse{
+		Username: user.Username,
+		Message:  "Welcome to Adventure Quest Worlds! An educational AQWorlds Private Server made with Go.",
+		Password: user.Password,
+	}
+	msg := loginResponse.toMessage()
 	sendPacket.AddString(msg)
 	return sendPacket
 }
